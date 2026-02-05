@@ -20,12 +20,12 @@ resource "aws_lb_target_group" "main" {
   target_type = "instance"
 
   health_check {
-    path                = "/admin" # Strapi Admin Path
-    interval            = 30
-    timeout             = 5
+    path                = "/" # Check root (lighter than admin)
+    interval            = 60  # Wait longer between checks
+    timeout             = 10
     healthy_threshold   = 2
-    unhealthy_threshold = 2
-    matcher             = "200-399"
+    unhealthy_threshold = 5   # Allow more failures during startup
+    matcher             = "200-404" # Accept 200, 302, 404 (Strapi root often 404s or redirects)
   }
 }
 

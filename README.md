@@ -28,7 +28,7 @@ Push this code to a new GitHub repository (`master/main` branch).
 
 ### 2. Configure Secrets (Crucial)
 In your GitHub Repo > **Settings** > **Secrets and variables** > **Actions**, add:
-*   `DOCKER_USERNAME`: Your Docker Hub username (e.g., `maheshbhoopathirao`).
+*   `DOCKER_USERNAME`: Your Docker Hub username 
 *   `DOCKER_PASSWORD`: Your Docker Hub Access Token.
 
 ### 3. Trigger Build
