@@ -9,11 +9,6 @@ data "aws_ami" "amazon_linux_2023" {
   }
 }
 
-# Key Pair (You need to generate this locally: ssh-keygen -f strapi-key)
-resource "aws_key_pair" "deployer" {
-  key_name   = "strapi-deploy-key"
-  public_key = file("${path.module}/strapi-key.pub")
-}
 
 # EC2 Instance
 resource "aws_instance" "app" {
@@ -28,6 +23,7 @@ resource "aws_instance" "app" {
   # Template User Data to inject variables
   user_data = templatefile("${path.module}/user_data.sh", {
     docker_image        = var.docker_image
+    db_host             = aws_instance.database.private_ip
     db_password         = var.db_password
     jwt_secret          = var.jwt_secret
     api_token_salt      = var.api_token_salt

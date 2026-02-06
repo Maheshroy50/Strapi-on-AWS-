@@ -24,7 +24,7 @@ resource "aws_lb_target_group" "main" {
     interval            = 60  # Wait longer between checks
     timeout             = 10
     healthy_threshold   = 2
-    unhealthy_threshold = 5   # Allow more failures during startup
+    unhealthy_threshold = 5         # Allow more failures during startup
     matcher             = "200-404" # Accept 200, 302, 404 (Strapi root often 404s or redirects)
   }
 }

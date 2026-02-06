@@ -59,3 +59,40 @@ resource "aws_security_group" "ec2" {
     Name = "strapi-ec2-sg"
   }
 }
+
+# Database Security Group (Private - Only accessible from EC2)
+resource "aws_security_group" "database" {
+  name        = "strapi-db-sg"
+  description = "Allow PostgreSQL from Application EC2 only"
+  vpc_id      = aws_vpc.main.id
+
+  # Allow PostgreSQL ONLY from EC2 Security Group
+  ingress {
+    description     = "PostgreSQL from App EC2"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ec2.id]
+  }
+
+  # Allow SSH from EC2 (for debugging via jump)
+  ingress {
+    description     = "SSH from App EC2"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ec2.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "strapi-db-sg"
+  }
+}
+
